@@ -1,0 +1,64 @@
+def checkprime(num):
+    n = num // 2
+    for i in range(2,n):
+        if num % i == 0:
+            return False
+        else:
+            continue
+    return True
+
+def solution(numbers):
+    prvelemets = []
+    def dfs(elements):
+        if prvelemets not in lst:
+            lst.append(prvelemets[:])
+        if len(elements) == 0:
+            return
+        else:
+            for v in elements:
+                nextelements = elements[:]
+                nextelements.remove(v)
+                prvelemets.append(v)
+                dfs(nextelements)
+                prvelemets.pop()
+
+    lst = []
+
+    dfs(list(numbers))
+    kst=[]
+    for e in lst:
+        a=''.join(e)
+        if a=='1' or a=='' or a=='0':
+            continue
+        kst.append(a)
+    answer = 0
+    kst=[int(v) for v in kst]
+    kst=list(set(kst))
+    for v in kst:
+        if v==0 or v==1:
+            continue
+        if checkprime(int(v)) == True:
+            answer += 1
+        else:
+            continue
+
+    return answer
+
+
+from itertools import permutations
+
+def solution2(n):
+    a = set()
+    for i in range(len(n)):
+        a |= set(map(int, map("".join, permutations(list(n), i + 1))))
+    a -= set(range(0, 2))
+    for i in range(2, int(max(a) ** 0.5) + 1):
+        a -= set(range(i * 2, max(a) + 1, i))
+    return len(a)
+
+
+
+
+
+if __name__ == '__main__':
+    print(solution2("17"))
